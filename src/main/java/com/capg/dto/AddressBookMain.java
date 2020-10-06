@@ -117,6 +117,13 @@ class AddressBookMain {
 		return temp;
 	}
 	
+	public List<Contact> sortContactsByZip(){
+		List<Contact> temp=addressBook.stream()
+							.sorted((firstContact,secondContact)->firstContact.getZip().compareTo(secondContact.getZip()))
+							.collect(Collectors.toList());
+		return temp;
+	}
+	
 	public List<Contact> addressBookCreator() {
 		String firstName,lastName,address,zip,phoneNo,email;
 		System.out.println("Welcome to Address Book");
@@ -128,8 +135,9 @@ class AddressBookMain {
 			System.out.println("2.Edit Contact");
 			System.out.println("3.Delete Contact");
 			System.out.println("4.Sort Contacts by City Names");
-			System.out.println("5.Display all contacts in Address Book");
-			System.out.println("6.Exit");
+			System.out.println("5.Sort Contacts by Zip Code");
+			System.out.println("6.Display all contacts in Address Book");
+			System.out.println("7.Exit");
 			System.out.println("Enter your choice");
 			choice=Integer.parseInt(sc.nextLine());
 			switch (choice) {
@@ -218,10 +226,18 @@ class AddressBookMain {
 					break;
 					
 				case 5:
+					System.out.println("Sorted Contacts");
+					List<Contact> li=sortContactsByCityName();
+					for(Contact c:li) {
+						System.out.println(c.getZip()+"->"+c.getLastName());
+					}
+					break;
+					
+				case 6:
 					displayAllContacts();
 					break;
 				
-				case 6:
+				case 7:
 					exit=false;
 					break;
 					
