@@ -110,6 +110,13 @@ class AddressBookMain {
 		}
 	}
 	
+	public List<Contact> sortContactsByPersonName(){
+		List<Contact> temp=addressBook.stream()
+					.sorted((firstContact,secondContact)->firstContact.getLastName().compareTo(secondContact.getLastName()))
+					.collect(Collectors.toList());
+		return temp;
+	}
+	
 	public List<Contact> sortContactsByCityName(){
 		List<Contact> temp=addressBook.stream()
 					.sorted((firstContact,secondContact)->firstContact.getAddress().compareTo(secondContact.getAddress()))
@@ -134,10 +141,11 @@ class AddressBookMain {
 			System.out.println("1.Add Contact");
 			System.out.println("2.Edit Contact");
 			System.out.println("3.Delete Contact");
-			System.out.println("4.Sort Contacts by City Names");
-			System.out.println("5.Sort Contacts by Zip Code");
-			System.out.println("6.Display all contacts in Address Book");
-			System.out.println("7.Exit");
+			System.out.println("4.Sort Contacts by Contact's LastName");
+			System.out.println("5.Sort Contacts by City Names");
+			System.out.println("6.Sort Contacts by Zip Code");
+			System.out.println("7.Display all contacts in Address Book");
+			System.out.println("8.Exit");
 			System.out.println("Enter your choice");
 			choice=Integer.parseInt(sc.nextLine());
 			switch (choice) {
@@ -227,17 +235,25 @@ class AddressBookMain {
 					
 				case 5:
 					System.out.println("Sorted Contacts");
+					List<Contact> list=sortContactsByCityName();
+					for(Contact c:list) {
+						System.out.println(c.getAddress()+"->"+c.getLastName());
+					}
+					break;
+					
+				case 6:
+					System.out.println("Sorted Contacts");
 					List<Contact> li=sortContactsByCityName();
 					for(Contact c:li) {
 						System.out.println(c.getZip()+"->"+c.getLastName());
 					}
 					break;
 					
-				case 6:
+				case 7:
 					displayAllContacts();
 					break;
 				
-				case 7:
+				case 8:
 					exit=false;
 					break;
 					
