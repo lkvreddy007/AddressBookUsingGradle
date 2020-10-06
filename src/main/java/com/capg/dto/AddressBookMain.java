@@ -235,8 +235,8 @@ class AddressBookMain {
 					
 				case 5:
 					System.out.println("Sorted Contacts");
-					List<Contact> list=sortContactsByCityName();
-					for(Contact c:list) {
+					List<Contact> lis=sortContactsByCityName();
+					for(Contact c:lis) {
 						System.out.println(c.getAddress()+"->"+c.getLastName());
 					}
 					break;
