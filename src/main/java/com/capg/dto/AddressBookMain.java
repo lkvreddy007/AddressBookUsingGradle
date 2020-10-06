@@ -127,8 +127,9 @@ class AddressBookMain {
 			System.out.println("1.Add Contact");
 			System.out.println("2.Edit Contact");
 			System.out.println("3.Delete Contact");
-			System.out.println("4.Display all contacts in Address Book");
-			System.out.println("5.Exit");
+			System.out.println("4.Sort Contacts by City Names");
+			System.out.println("5.Display all contacts in Address Book");
+			System.out.println("6.Exit");
 			System.out.println("Enter your choice");
 			choice=Integer.parseInt(sc.nextLine());
 			switch (choice) {
@@ -209,10 +210,18 @@ class AddressBookMain {
 					break;
 					
 				case 4:
+					System.out.println("Sorted Contacts");
+					List<Contact> list=sortContactsByCityName();
+					for(Contact c:list) {
+						System.out.println(c.getAddress()+"->"+c.getLastName());
+					}
+					break;
+					
+				case 5:
 					displayAllContacts();
 					break;
 				
-				case 5:
+				case 6:
 					exit=false;
 					break;
 					
