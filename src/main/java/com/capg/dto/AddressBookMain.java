@@ -112,15 +112,15 @@ class AddressBookMain {
 	
 	public List<Contact> sortContactsByCityName(){
 		List<Contact> temp=addressBook.stream()
-							.sorted((firstContact,secondContact)->firstContact.getAddress().compareTo(secondContact.getAddress()))
-							.collect(Collectors.toList());
+					.sorted((firstContact,secondContact)->firstContact.getAddress().compareTo(secondContact.getAddress()))
+					.collect(Collectors.toList());
 		return temp;
 	}
 	
 	public List<Contact> sortContactsByZip(){
 		List<Contact> temp=addressBook.stream()
-							.sorted((firstContact,secondContact)->firstContact.getZip().compareTo(secondContact.getZip()))
-							.collect(Collectors.toList());
+					.sorted((firstContact,secondContact)->firstContact.getZip().compareTo(secondContact.getZip()))
+					.collect(Collectors.toList());
 		return temp;
 	}
 	
