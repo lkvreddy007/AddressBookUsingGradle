@@ -63,5 +63,14 @@ public class Contact {
 	public String getEmail() {
 		return this.email;
 	}
+	
+	public String toString() {
+		return  "FirstName: "+firstName
+				+", LastName: "+lastName
+				+", Address: "+address
+				+", Zip: "+zip
+				+", Phone No: "+phoneNo
+				+", Email: "+email;
+	}
 }
 
