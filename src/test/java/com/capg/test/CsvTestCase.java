@@ -16,7 +16,7 @@ import junit.framework.Assert;
 public class CsvTestCase {
 
 	@Test
-	public void test() throws IOException {
+	public void givenAddressBookAsInput_WhenCorrect_ShouldWriteIntoCSVFILE() throws IOException {
 		AddressBookFileIO fileIO=new AddressBookFileIO();
 		List<Contact> addressBook=new ArrayList<Contact>();
 		addressBook.add(new Contact("Raghava", "Mammi", "Hyderabad", "500 019","91 9999999999", "rmammi@gmail.com"));
@@ -27,7 +27,7 @@ public class CsvTestCase {
 	}
 	
 	@Test
-	public void test2() throws IOException {
+	public void whenCSVFileisGivenAsInput_WhenCorrect_ShouldCreateAddressBook() throws IOException {
 		AddressBookFileIO fileIO=new AddressBookFileIO();
 		List<Contact> addressBook=new ArrayList<Contact>();
 		addressBook.add(new Contact("Raghava", "Mammi", "Hyderabad", "500 019","91 9999999999", "rmammi@gmail.com"));
