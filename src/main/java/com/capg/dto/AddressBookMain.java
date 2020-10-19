@@ -64,7 +64,9 @@ public class AddressBookMain {
 			System.out.println("7.Write Address Book To File");
 			System.out.println("8.Write Address Book To Csv File");
 			System.out.println("9.Read Address Book From Csv File and add to shelf");
-			System.out.println("10.Exit");
+			System.out.println("10.Write Address Book To Json File");
+			System.out.println("11.Read Address Book From Json File");
+			System.out.println("12.Exit");
 			System.out.println("Enter your choice");
 			int check=Integer.parseInt(sc.nextLine());
 			switch(check){
@@ -180,19 +182,60 @@ public class AddressBookMain {
 				case 9:
 					System.out.println("Enter the Csv file name to read");
 					String path= sc.nextLine();
-					System.out.println("Enter the name of AddressBook");
-					String nameAddressBook =sc.nextLine();
-					if(shelf.containsKey(nameAddressBook)) {
-						System.out.println("Key already exists.");
-					}
-					else {
-						addressBook=fileIO.readFromCsv(path);
-						shelf.put(nameAddressBook, addressBook);
-						System.out.println("Address Book added to Shelf");
+					boolean k=true;
+					while(k) {
+						System.out.println("Enter the name of AddressBook");
+						String nameAddressBook =sc.nextLine();
+						if(shelf.containsKey(nameAddressBook)) {
+							System.out.println("Key already exists.");
+						}
+						else {
+							addressBook=fileIO.readFromCsv(path);
+							shelf.put(nameAddressBook, addressBook);
+							System.out.println("Address Book added to Shelf");
+							k=false;
+						}
 					}
 					break;
 					
 				case 10:
+					System.out.println("Give the file path to Write");
+					String filepath=sc.nextLine();
+					boolean y= true;
+					while(y) {
+						System.out.println("Enter the name of Address Book");
+						String key= sc.nextLine();
+						if(shelf.containsKey(key)) {
+							fileIO.writeIntoJson(shelf.get(key), filepath);
+							y=false;
+							System.out.println("Address Book written to Json file");
+						}
+						else {
+							System.out.println("Address Book  with "+key+" name doesnot exist");
+						}
+					}
+					break;
+					
+				case 11:
+					System.out.println("Enter the Json file name to read");
+					String filpath= sc.nextLine();
+					boolean m=true;
+					while(m) {
+						System.out.println("Enter the name of AddressBook");
+						String nameAddressBook =sc.nextLine();
+						if(shelf.containsKey(nameAddressBook)) {
+							System.out.println("Key already exists.");
+						}
+						else {
+							addressBook=fileIO.readFromJson(filpath);
+							shelf.put(nameAddressBook, addressBook);
+							System.out.println("Address Book added to Shelf");
+							m=false;
+						}
+					}
+					break;
+					
+				case 12:
 					exit=false;
 					break;
 					
