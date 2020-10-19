@@ -1,5 +1,6 @@
 package com.capg.dto;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,9 +9,11 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -76,9 +79,9 @@ public class AddressBookFileIO {
 		return entries;
 	}
 	
-	public List<Contact> ReadFromCsv(String filePath) {
+	public List<Contact> readFromCsv(String filePath) {
 		try(Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
-			CsvToBean<Contact> csvToBean = new CsvToBeanBuilder(reader)
+			CsvToBean<Contact> csvToBean = new CsvToBeanBuilder<Contact>(reader)
 					.withType(Contact.class)
 					.withIgnoreLeadingWhiteSpace(true)
 					.build();
@@ -102,6 +105,31 @@ public class AddressBookFileIO {
 		            .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
 		             .build();
 			csvWriter.write(addressBook);
+			writer.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public List<Contact> readFromJson(String filePath){
+		List<Contact> addressBook=new ArrayList<Contact>();
+		try(Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
+			Gson gson=new Gson();
+			addressBook = Arrays.asList(gson.fromJson(reader, Contact[].class));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return addressBook;
+	}
+	
+	public boolean writeIntoJson(List<Contact> addressBook,String filePath) {
+		try(Writer writer= Files.newBufferedWriter(Paths.get(filePath))) {
+			Gson gson =new Gson();
+			gson.toJson(addressBook,writer);
 			writer.close();
 		}
 		catch(Exception e) {
