@@ -1,11 +1,21 @@
 package com.capg.dto;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 public class AddressBookFileIO {
 	
@@ -64,5 +74,40 @@ public class AddressBookFileIO {
 			e.printStackTrace();
 		}
 		return entries;
+	}
+	
+	public List<Contact> ReadFromCsv(String filePath) {
+		try(Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
+			CsvToBean<Contact> csvToBean = new CsvToBeanBuilder(reader)
+					.withType(Contact.class)
+					.withIgnoreLeadingWhiteSpace(true)
+					.build();
+			Iterator<Contact> csvIterator= csvToBean.iterator();
+			List<Contact> addressBook = new ArrayList<Contact>();
+			while(csvIterator.hasNext()) {
+				Contact contacts=csvIterator.next();
+				addressBook.add(new Contact(contacts.getFirstName(),contacts.getLastName(),contacts.getAddress(),contacts.getZip(),contacts.getPhoneNo(),contacts.getEmail()));
+			}
+			return addressBook;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean writeIntoCsv(List<Contact> addressBook,String filePath) throws IOException {
+		try(Writer writer= Files.newBufferedWriter(Paths.get(filePath))) {
+			StatefulBeanToCsv<Contact> csvWriter = new StatefulBeanToCsvBuilder<Contact>(writer)
+		            .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+		             .build();
+			csvWriter.write(addressBook);
+			writer.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }
