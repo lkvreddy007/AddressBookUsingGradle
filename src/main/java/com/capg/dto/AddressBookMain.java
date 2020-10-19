@@ -1,5 +1,6 @@
 package com.capg.dto;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,9 @@ public class AddressBookMain {
 			System.out.println("5.Find Number Of Contacts in City");
 			System.out.println("6.Add Address Book created by reading from file to Shelf ");
 			System.out.println("7.Write Address Book To File");
-			System.out.println("8.Exit");
+			System.out.println("8.Write Address Book To Csv File");
+			System.out.println("9.Read Address Book From Csv File and add to shelf");
+			System.out.println("10.Exit");
 			System.out.println("Enter your choice");
 			int check=Integer.parseInt(sc.nextLine());
 			switch(check){
@@ -134,19 +137,62 @@ public class AddressBookMain {
 					break;
 					
 				case 7:
-					System.out.println("Give the Path of the file to read contacts");
+					System.out.println("Give the Path of the file to write contacts");
 					String fPath=sc.nextLine();
-					System.out.println("Enter the name of Address Book to write into File");
-					String k=sc.nextLine();
-					if(shelf.containsKey(k)) {
-						fileIO.writeData(shelf.get(k), fPath);
-					}
-					else {
-						System.out.println("Address Book with "+k+" name doesnot exist");
+					boolean u=true;
+					while(u) {
+						System.out.println("Enter the name of Address Book to write into File");
+						String k=sc.nextLine();
+						if(shelf.containsKey(k)) {
+							fileIO.writeData(shelf.get(k), fPath);
+							b=false;
+							System.out.println("Address book written to text file");
+						}
+						else {
+							System.out.println("Address Book with "+k+" name doesnot exist");
+						}
 					}
 					break;
 				
 				case 8:
+					System.out.println("Give the file path to Write");
+					String file=sc.nextLine();
+					boolean x= true;
+					while(x) {
+						System.out.println("Enter the name of Address Book");
+						String key= sc.nextLine();
+						try {
+							if(shelf.containsKey(key)) {
+								fileIO.writeIntoCsv(shelf.get(key), file);
+								x=false;
+								System.out.println("Address Book written to Csv file");
+							}
+							else {
+								System.out.println("Address Book  with "+key+" name doesnot exist");
+							}
+						}
+						catch(IOException e) {
+							e.printStackTrace();
+						}
+					}
+					break;
+					
+				case 9:
+					System.out.println("Enter the Csv file name to read");
+					String path= sc.nextLine();
+					System.out.println("Enter the name of AddressBook");
+					String nameAddressBook =sc.nextLine();
+					if(shelf.containsKey(nameAddressBook)) {
+						System.out.println("Key already exists.");
+					}
+					else {
+						addressBook=fileIO.ReadFromCsv(path);
+						shelf.put(nameAddressBook, addressBook);
+						System.out.println("Address Book added to Shelf");
+					}
+					break;
+					
+				case 10:
 					exit=false;
 					break;
 					
