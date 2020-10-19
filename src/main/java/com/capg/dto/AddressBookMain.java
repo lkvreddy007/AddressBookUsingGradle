@@ -186,7 +186,7 @@ public class AddressBookMain {
 						System.out.println("Key already exists.");
 					}
 					else {
-						addressBook=fileIO.ReadFromCsv(path);
+						addressBook=fileIO.readFromCsv(path);
 						shelf.put(nameAddressBook, addressBook);
 						System.out.println("Address Book added to Shelf");
 					}
