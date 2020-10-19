@@ -76,7 +76,7 @@ public class AddressBookFileIO {
 		return entries;
 	}
 	
-	public List<Contact> ReadFromCsv(String filePath) {
+	public List<Contact> readFromCsv(String filePath) {
 		try(Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
 			CsvToBean<Contact> csvToBean = new CsvToBeanBuilder(reader)
 					.withType(Contact.class)
