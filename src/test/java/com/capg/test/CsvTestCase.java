@@ -34,7 +34,7 @@ public class CsvTestCase {
 		addressBook.add(new Contact("Vikas", "Mammi", "Hyderabad", "500 019","91 9999999999", "rammi@gmail.com"));
 		addressBook.add(new Contact("Ragha", "Mammi", "Hyderabad", "500 019","91 9999999999", "rmami@gmail.com"));
 		//boolean b= fileIO.writeIntoCsv(addressBook, "csvFile.csv");
-		List<Contact> contactList= fileIO.ReadFromCsv("csvFile.csv");
+		List<Contact> contactList= fileIO.readFromCsv("csvFile.csv");
 		Assert.assertEquals(contactList.size(),addressBook.size());
 	}
 }
