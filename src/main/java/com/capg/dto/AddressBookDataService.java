@@ -21,4 +21,29 @@ public class AddressBookDataService {
 		return this.addressBookList;
 	}
 
+	public void updateAddressBookData(String firstName, int phone) {
+		int result = addressBookDBService.updateEmployeeData(firstName, phone);
+		if(result == 0) {
+			return;
+		}
+		Contact contactData =this.getAddressBookData(firstName);
+		if(contactData != null) {
+			contactData.setPhoneNo(phone+"");;
+		}
+	}
+
+	private Contact getAddressBookData(String firstName) {
+		Contact contact;
+		contact = this.addressBookList.stream()
+					  .filter(con -> con.getFirstName().equals(firstName))
+					  .findFirst()
+					  .orElse(null);
+		return contact;
+	}
+
+	public boolean checkEmployeePayrollInSyncWithDB(String firstName) {
+		List<Contact> addressBookList = addressBookDBService.getAddressBookData(firstName);
+		return addressBookList.get(0).equals(getAddressBookData(firstName));
+	}
+
 }

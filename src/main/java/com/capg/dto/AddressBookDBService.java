@@ -2,6 +2,7 @@ package com.capg.dto;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ import java.util.List;
 public class AddressBookDBService {
 
 	private static AddressBookDBService addressBookDBService;
+	private  PreparedStatement addressBookDataStatement;
 
 	public static AddressBookDBService getInstance() {
 		if(addressBookDBService == null) {
@@ -45,7 +47,7 @@ public class AddressBookDBService {
 				String lastName = result.getString("lastname");
 				String address = result.getString("address");
 				String zip = result.getString("zip");
-				String phoneNumber = ""+result.getInt("phone");
+				String phoneNumber = result.getString("phone");
 				String email = result.getString("email");
 				addressBookList.add(new Contact(firstName,lastName,address,zip,phoneNumber,email));
 			}
@@ -71,6 +73,47 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 		return connection;
+	}
+
+	public int updateEmployeeData(String firstName, int phone) {
+		String sql = "update person_details set phone = ? where firstname = ?;";
+		try(Connection connection = this.getConnection()){
+			PreparedStatement prepStatement = connection.prepareStatement(sql);
+			prepStatement.setDouble(1, phone);
+			prepStatement.setString(2, firstName);
+			return prepStatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public List<Contact> getAddressBookData(String firstName) {
+		List<Contact> addressBookList = null;
+		if(this.addressBookDataStatement == null) {
+			this.prepareStatementForAddressBook();
+		}
+		try {
+			addressBookDataStatement.setString(1,firstName);
+			ResultSet resultSet = addressBookDataStatement.executeQuery();
+			addressBookList = this.getAddressBookData(resultSet);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return addressBookList;
+	}
+
+	private void prepareStatementForAddressBook() {
+		try {
+			Connection connection = this.getConnection();
+			String sql = "Select * from person_details where firstname = ?;";
+			addressBookDataStatement = connection.prepareStatement(sql);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

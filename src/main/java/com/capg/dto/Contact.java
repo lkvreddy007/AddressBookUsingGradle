@@ -85,5 +85,17 @@ public class Contact {
 				+", Phone No: "+phoneNo
 				+", Email: "+email;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {		
+		if(this == obj) {
+			return true;
+		}
+		if(obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		Contact that = (Contact) obj;
+		return firstName.equals(that.firstName) && phoneNo.equals(that.phoneNo) && lastName.equals(that.lastName);
+	} 
 }
 
