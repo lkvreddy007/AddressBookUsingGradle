@@ -54,4 +54,11 @@ public class AddressBookDataService {
 		return null;
 	}
 
+	public int getNumberOfContactsInCity(IOService ioService, String city) {
+		if(ioService.equals(IOService.DB_IO)) {
+			return addressBookDBService.getNumberOfContactsInCity(city);
+		}
+		return 0;
+	}
+
 }
