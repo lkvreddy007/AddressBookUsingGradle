@@ -14,8 +14,8 @@ public class AddressBookJDBCTest {
 	
 	@Test
 	public void givenEmployeePayrollInDB_WhenRetrived_ShouldMatchEmployeeCount() {
-		AddressBookDataService employeePayRollService = new AddressBookDataService();
-		List<Contact> addressBookData = employeePayRollService.readAddressBookData(IOService.DB_IO);
+		AddressBookDataService addressBookService = new AddressBookDataService();
+		List<Contact> addressBookData = addressBookService.readAddressBookData(IOService.DB_IO);
 		Assert.assertEquals(8, addressBookData.size());
 	}
 	
