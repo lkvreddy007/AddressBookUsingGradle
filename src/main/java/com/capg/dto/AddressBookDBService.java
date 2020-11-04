@@ -63,7 +63,7 @@ public class AddressBookDBService {
 	private Connection getConnection() {
 		String jdbcURL = "jdbc:mysql://localhost:3306/addressbook_service?allowPublicKeyRetrieval=true&useSSL=false";
 		String userName = "root";
-		String password = "Ritz@5369";
+		String password = "XXXXX";
 		Connection connection = null;
 		System.out.println("Connecting to database "+jdbcURL);
 		try {
