@@ -61,4 +61,10 @@ public class AddressBookDataService {
 		return 0;
 	}
 
+	public void addContactToAddressBook(IOService ioService,int id, String firstName, String lastName, String address, int zip, int phone,
+			String email,LocalDate date_added, String city, String state, String type, String addressBookName) {
+		addressBookList.add(addressBookDBService.addContactToAddressBook(id, firstName, lastName, address, zip, phone,
+				 email, date_added, city, state, type, addressBookName));
+	}
+
 }

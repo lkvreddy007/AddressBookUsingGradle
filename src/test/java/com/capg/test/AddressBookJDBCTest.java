@@ -1,6 +1,7 @@
 package com.capg.test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,15 @@ public class AddressBookJDBCTest {
 		addressBookService.readAddressBookData(IOService.DB_IO);
 		int count = addressBookService.getNumberOfContactsInCity(IOService.DB_IO,"Hyderabad");
 		Assert.assertEquals(4,count);
+	}
+	
+	@Test
+	public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
+		AddressBookDataService addressBookService = new AddressBookDataService();
+		addressBookService.readAddressBookData(IOService.DB_IO);
+		addressBookService.addContactToAddressBook(IOService.DB_IO,9,"Harsha","Tamatam","Kukkatpally",500034,8494949,"elonmusk@gmail.com",LocalDate.of(2019,8,19),"Hyderabad","Telangana","Friend","B");
+		boolean result = addressBookService.checkAddressBookPayrollInSyncWithDB("Harsha");
+		Assert.assertTrue(result);
 	}
 	
 }
