@@ -1,11 +1,13 @@
 package com.capg.dto;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +77,7 @@ public class AddressBookDBService {
 		return connection;
 	}
 
-	public int updateEmployeeData(String firstName, int phone) {
+	public int updateAddressBookData(String firstName, int phone) {
 		String sql = "update person_details set phone = ? where firstname = ?;";
 		try(Connection connection = this.getConnection()){
 			PreparedStatement prepStatement = connection.prepareStatement(sql);
@@ -115,5 +117,11 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 	}
+
+	public List<Contact> getAddressBookForDateRange(LocalDate startDate, LocalDate endDate) {
+		String sql = String.format("select * from person_details where start between '%s' and '%s';", Date.valueOf(startDate),Date.valueOf(endDate));
+		return this.getAddressBookUsingDB(sql);
+	}
+
 
 }

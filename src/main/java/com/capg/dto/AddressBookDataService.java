@@ -1,5 +1,6 @@
 package com.capg.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.capg.dto.Contact;
@@ -22,7 +23,7 @@ public class AddressBookDataService {
 	}
 
 	public void updateAddressBookData(String firstName, int phone) {
-		int result = addressBookDBService.updateEmployeeData(firstName, phone);
+		int result = addressBookDBService.updateAddressBookData(firstName, phone);
 		if(result == 0) {
 			return;
 		}
@@ -41,9 +42,16 @@ public class AddressBookDataService {
 		return contact;
 	}
 
-	public boolean checkEmployeePayrollInSyncWithDB(String firstName) {
+	public boolean checkAddressBookPayrollInSyncWithDB(String firstName) {
 		List<Contact> addressBookList = addressBookDBService.getAddressBookData(firstName);
 		return addressBookList.get(0).equals(getAddressBookData(firstName));
+	}
+
+	public List<Contact> readAddressBookForDateRange(IOService ioService, LocalDate startDate, LocalDate endDate) {
+		if(ioService.equals(IOService.DB_IO)) {
+			return addressBookDBService.getAddressBookForDateRange(startDate, endDate);
+		}
+		return null;
 	}
 
 }
