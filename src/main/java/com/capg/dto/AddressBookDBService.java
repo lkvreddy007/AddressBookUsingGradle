@@ -119,8 +119,24 @@ public class AddressBookDBService {
 	}
 
 	public List<Contact> getAddressBookForDateRange(LocalDate startDate, LocalDate endDate) {
-		String sql = String.format("select * from person_details where start between '%s' and '%s';", Date.valueOf(startDate),Date.valueOf(endDate));
+		String sql = String.format("select * from person_details where date_added between '%s' and '%s';", Date.valueOf(startDate),Date.valueOf(endDate));
 		return this.getAddressBookUsingDB(sql);
+	}
+
+	public int getNumberOfContactsInCity(String city) {
+		String sql = String.format("select city,count(firstName) as count from zip,person_details where zip.zip=person_details.zip and city='%s' group by (city);",city);
+		try(Connection connection = this.getConnection()){
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			while(result.next()) {
+				int count = result.getInt("count");
+				return count;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 

@@ -2,6 +2,7 @@ package com.capg.test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -37,6 +38,14 @@ public class AddressBookJDBCTest {
 		LocalDate endDate = LocalDate.now();
 		List<Contact> addressBookData = addressBookService.readAddressBookForDateRange(IOService.DB_IO, startDate, endDate);
 		Assert.assertEquals(4, addressBookData.size());
+	}
+	
+	@Test
+	public void givenAddressBookInDB_WhenRetrievedbyCity_ShouldReturnCount() {
+		AddressBookDataService addressBookService = new AddressBookDataService();
+		addressBookService.readAddressBookData(IOService.DB_IO);
+		int count = addressBookService.getNumberOfContactsInCity(IOService.DB_IO,"Hyderabad");
+		Assert.assertEquals(4,count);
 	}
 	
 }
