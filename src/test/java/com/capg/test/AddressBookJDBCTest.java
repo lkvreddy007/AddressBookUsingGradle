@@ -13,7 +13,7 @@ import junit.framework.Assert;
 public class AddressBookJDBCTest {
 	
 	@Test
-	public void givenEmployeePayrollInDB_WhenRetrived_ShouldMatchEmployeeCount() {
+	public void givenAddressBookInDB_WhenRetrived_ShouldMatchEmployeeCount() {
 		AddressBookDataService addressBookService = new AddressBookDataService();
 		List<Contact> addressBookData = addressBookService.readAddressBookData(IOService.DB_IO);
 		Assert.assertEquals(8, addressBookData.size());
