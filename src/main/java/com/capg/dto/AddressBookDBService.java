@@ -1,11 +1,13 @@
 package com.capg.dto;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +77,7 @@ public class AddressBookDBService {
 		return connection;
 	}
 
-	public int updateEmployeeData(String firstName, int phone) {
+	public int updateAddressBookData(String firstName, int phone) {
 		String sql = "update person_details set phone = ? where firstname = ?;";
 		try(Connection connection = this.getConnection()){
 			PreparedStatement prepStatement = connection.prepareStatement(sql);
@@ -114,6 +116,107 @@ public class AddressBookDBService {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Contact> getAddressBookForDateRange(LocalDate startDate, LocalDate endDate) {
+		String sql = String.format("select * from person_details where date_added between '%s' and '%s';", Date.valueOf(startDate),Date.valueOf(endDate));
+		return this.getAddressBookUsingDB(sql);
+	}
+
+	public int getNumberOfContactsInCity(String city) {
+		String sql = String.format("select city,count(firstName) as count from zip,person_details where zip.zip=person_details.zip and city='%s' group by (city);",city);
+		try(Connection connection = this.getConnection()){
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			while(result.next()) {
+				int count = result.getInt("count");
+				return count;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public Contact addContactToAddressBook(int id, String firstName, String lastName, String address, int zip,
+			int phone, String email, LocalDate date_added, String city, String state, String type,
+			String addressBookName) {
+		Connection connection = null;
+		Contact contact = null;
+		try {
+			connection = this.getConnection();
+			connection.setAutoCommit(false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try(Statement statement = connection.createStatement()){
+			String sql = String.format("Insert into zip (zip,city,state) values (%s,'%s','%s')", zip, city,state);
+			statement.executeUpdate(sql);
+			contact = new Contact(firstName,lastName,address, ""+zip, ""+phone, email);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+				return contact;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try(Statement statement = connection.createStatement()){
+			String sql = String.format("Insert into person_details (person_id,firstname,lastname,address,zip,phone,email,date_added) values (%s,'%s','%s','%s',%s,%s,'%s','%s')",
+										id,firstName,lastName,address,zip,phone,email,Date.valueOf(date_added));
+			statement.executeUpdate(sql);
+			contact = new Contact(firstName,lastName,address, ""+zip, ""+phone, email);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+				return contact;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		
+		try(Statement statement = connection.createStatement()){
+			String sql = String.format("Insert into addressbook_shelf (person_id,type,bookname) values (%s,'%s','%s')", id, type,addressBookName);
+			int rowAffected = statement.executeUpdate(sql);
+			if (rowAffected == 1) {
+				contact = new Contact(firstName,lastName,address, ""+zip, ""+phone, email);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+				return contact;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		try {
+			connection.commit();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} 
+				catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return contact;
 	}
 
 }
