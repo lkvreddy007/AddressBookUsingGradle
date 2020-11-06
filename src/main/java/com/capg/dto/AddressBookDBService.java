@@ -60,10 +60,10 @@ public class AddressBookDBService {
 		return addressBookList;
 	}
 
-	private Connection getConnection() {
+	private synchronized Connection getConnection() {
 		String jdbcURL = "jdbc:mysql://localhost:3306/addressbook_service?allowPublicKeyRetrieval=true&useSSL=false";
 		String userName = "root";
-		String password = "XXXXX";
+		String password = System.getenv().get("sql_password");
 		Connection connection = null;
 		System.out.println("Connecting to database "+jdbcURL);
 		try {
