@@ -60,6 +60,14 @@ public class Contact {
 		this.setBookName(bookName);
 	}
 	
+	public Contact(int id, String firstname, String lastname, String address, String zip, 
+					String city, String state,String phone, String email) {
+		this(firstname,lastname,address,zip,phone,email);
+		this.setId(id);
+		this.setCity(city);
+		this.setState(state);
+	}
+
 	public int getId() {
 		return id;
 	}
