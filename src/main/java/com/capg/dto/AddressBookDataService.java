@@ -115,4 +115,11 @@ public class AddressBookDataService {
 		addressBookList.add(contact);
 	}
 
+	public void deleteContact(String firstName, IOService iosService) {
+		if(iosService.equals(IOService.REST_IO)) {
+			Contact contact = this.getAddressBookData(firstName);
+			addressBookList.remove(contact);
+		}
+	}
+
 }

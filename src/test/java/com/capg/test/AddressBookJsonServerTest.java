@@ -39,76 +39,93 @@ public class AddressBookJsonServerTest {
 		return request.post("/addressBook");
 	}
 	
-	@Test
-	public void givenNewContact_WhenAdded_ShouldMatch201ResponseCount() {
-		Contact[] arrayOfContacts = getContactList();
-		AddressBookDataService addressBookDataService;
-		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayOfContacts));
-		
-		Contact contact = null;
-		contact = new Contact(0, "Krishna", "lankala","Srinivasa Colony","Mahabubnagar","Telangana","509001","4848848","jjdjdj@gmail.com");
-		
-		Response response = addContactToJsonServer(contact);
-		int statusCode = response.getStatusCode();
-		Assert.assertEquals(201, statusCode);
-		
-		contact = new Gson().fromJson(response.asString(), Contact.class);
-		addressBookDataService.addContactToAddressBook(contact, IOService.REST_IO);
-		long entries = addressBookDataService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(2, entries);
-	}
+//	@Test
+//	public void givenNewContact_WhenAdded_ShouldMatch201ResponseCount() {
+//		Contact[] arrayOfContacts = getContactList();
+//		AddressBookDataService addressBookDataService;
+//		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayOfContacts));
+//		
+//		Contact contact = null;
+//		contact = new Contact(0, "Krishna", "lankala","Srinivasa Colony","Mahabubnagar","Telangana","509001","4848848","jjdjdj@gmail.com");
+//		
+//		Response response = addContactToJsonServer(contact);
+//		int statusCode = response.getStatusCode();
+//		Assert.assertEquals(201, statusCode);
+//		
+//		contact = new Gson().fromJson(response.asString(), Contact.class);
+//		addressBookDataService.addContactToAddressBook(contact, IOService.REST_IO);
+//		long entries = addressBookDataService.countEntries(IOService.REST_IO);
+//		Assert.assertEquals(2, entries);
+//	}
+//	
+//	@Test 
+//	public void givenContactsInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
+//		Contact[] arrayContacts = getContactList();
+//		AddressBookDataService addressBookDataService;
+//		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayContacts));
+//		long entries = addressBookDataService.countEntries(IOService.REST_IO);
+//		Assert.assertEquals(2, entries);
+//	}
+//	
+//	@Test
+//	public void givenMultipleContacts_WhenAdded_ShouldMatch201ResponseCount() {
+//		Contact[] arrContacts = getContactList();
+//		AddressBookDataService addressBookDataService;
+//		addressBookDataService = new AddressBookDataService(Arrays.asList(arrContacts));
+//		
+//		Contact[] arrayOfContacts = {
+//				new Contact(0,"Rohith","MK", "Gajuvaka","Vizag","Andhra Pradesh","409002","9030303","jdksj@gmail.com"),
+//				new Contact(0, "Vamsi","G","RS Colony","Guntur","Andhra Pradesh","408223","49949943","sjksjda@gmail.com"),
+//				new Contact(0, "Anil", "M","New town","Mahabubnagar","Telangana","509001","3888393","dkakjsj@gmail.com"),
+//		};
+//		
+//		for(Contact contact :arrayOfContacts) {
+//			Response response = addContactToJsonServer(contact);
+//			int statusCode = response.getStatusCode();
+//			Assert.assertEquals(201, statusCode);
+//			
+//			contact = new Gson().fromJson(response.asString(), Contact.class);
+//			addressBookDataService.addContactToAddressBook(contact, IOService.REST_IO);
+//		}
+//		
+//		long entries = addressBookDataService.countEntries(IOService.REST_IO);
+//		Assert.assertEquals(5, entries);
+//	}
+//	
+//	@Test 
+//	public void givenNewPhoneNumberForContact_WhenUpdated_ShouldMatch200Response() {
+//		AddressBookDataService addressBookDataService;
+//		Contact[] arrayOfContacts = getContactList();
+//		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayOfContacts));
+//		
+//		addressBookDataService.updateAddressBookJson("Rohith", 9999999);
+//		Contact contact = addressBookDataService.getAddressBookData("Rohith");
+//		
+//		String contactJson = new Gson().toJson(contact);
+//		RequestSpecification request = RestAssured.given();
+//		request.header("Content-Type","application/json");
+//		request.body(contactJson);
+//		Response response = request.put("/addressBook/"+contact.getId());
+//		int statusCode = response.getStatusCode();
+//		Assert.assertEquals(200, statusCode);
+//	}
 	
 	@Test 
-	public void givenContactsInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
-		Contact[] arrayContacts = getContactList();
-		AddressBookDataService addressBookDataService;
-		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayContacts));
-		long entries = addressBookDataService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(2, entries);
-	}
-	
-	@Test
-	public void givenMultipleContacts_WhenAdded_ShouldMatch201ResponseCount() {
-		Contact[] arrContacts = getContactList();
-		AddressBookDataService addressBookDataService;
-		addressBookDataService = new AddressBookDataService(Arrays.asList(arrContacts));
-		
-		Contact[] arrayOfContacts = {
-				new Contact(0,"Rohith","MK", "Gajuvaka","Vizag","Andhra Pradesh","409002","9030303","jdksj@gmail.com"),
-				new Contact(0, "Vamsi","G","RS Colony","Guntur","Andhra Pradesh","408223","49949943","sjksjda@gmail.com"),
-				new Contact(0, "Anil", "M","New town","Mahabubnagar","Telangana","509001","3888393","dkakjsj@gmail.com"),
-		};
-		
-		for(Contact contact :arrayOfContacts) {
-			Response response = addContactToJsonServer(contact);
-			int statusCode = response.getStatusCode();
-			Assert.assertEquals(201, statusCode);
-			
-			contact = new Gson().fromJson(response.asString(), Contact.class);
-			addressBookDataService.addContactToAddressBook(contact, IOService.REST_IO);
-		}
-		
-		long entries = addressBookDataService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(5, entries);
-	}
-	
-	@Test 
-	public void givenNewPhoneNumberForContact_WhenUpdated_ShouldMatch200Response() {
+	public void givenContactToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() {
 		AddressBookDataService addressBookDataService;
 		Contact[] arrayOfContacts = getContactList();
-		System.out.println(arrayOfContacts[0]);
 		addressBookDataService = new AddressBookDataService(Arrays.asList(arrayOfContacts));
 		
-		addressBookDataService.updateAddressBookJson("Rohith", 9999999);
-		Contact contact = addressBookDataService.getAddressBookData("Rohith");
-		
-		String contactJson = new Gson().toJson(contact);
+		Contact contact = addressBookDataService.getAddressBookData("Anil");
 		RequestSpecification request = RestAssured.given();
 		request.header("Content-Type","application/json");
-		request.body(contactJson);
-		Response response = request.put("/addressBook/"+contact.getId());
+		Response response = request.delete("/addressBook/"+contact.getId());
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
+		
+		addressBookDataService.deleteContact(contact.getFirstName(),IOService.REST_IO);
+		long entries = addressBookDataService.countEntries(IOService.REST_IO);
+		Assert.assertEquals(4, entries);
 	}
 	
 }
