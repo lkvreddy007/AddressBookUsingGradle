@@ -40,8 +40,15 @@ public class AddressBookDataService {
 			contactData.setPhoneNo(phone+"");;
 		}
 	}
+	
+	public void updateAddressBookJson(String firstName, int phone) {
+		Contact contact = this.getAddressBookData(firstName);
+		if(contact != null) {
+			contact.setPhoneNo(""+phone);
+		}
+	}
 
-	private Contact getAddressBookData(String firstName) {
+	public Contact getAddressBookData(String firstName) {
 		Contact contact;
 		contact = this.addressBookList.stream()
 					  .filter(con -> con.getFirstName().equals(firstName))
